@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello NemController!{% endblock %}
+
+{% block body %}
+
+    {% for nem in nems %}
+    
+        <div class="border border-dark">
+            <h3>{{ nem.name }}</h3>
+            <p><strong>Price : {{ nem.price }}€</strong></p>
+            <p><strong>Disponible depuis : {{ nem.createdAt|date("m/d/Y") }}</strong></p>
+            <p><strong>Inventé par : {{ nem.author.email }}</strong></p>
+            <a href="{{ path('show_nem', {id:nem.id}) }}" class="btn btn-primary">Voir</a>
+            
+        </div>
+    
+    {% endfor %}
+{% endblock %}

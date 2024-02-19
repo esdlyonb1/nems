@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+{% form_theme commentForm "bootstrap_5_layout.html.twig" %}
+{% block body %}
+
+    <div class="border border-dark">
+        <h3>{{ nem.name }}</h3>
+        <p><strong>Price : {{ nem.price }}€</strong></p>
+        <p><strong>Disponible depuis : {{ nem.createdAt|date("m/d/Y") }}</strong></p>
+        <p><strong>Inventé par : {{ nem.author.email }}</strong></p>
+
+        <a href="{{ path('app_nems') }}" class="btn btn-secondary">Retour</a>
+
+        {% if app.user == nem.author %}
+        <a href="" class="btn btn-danger">Delete</a>
+        <a href="" class="btn btn-warning">Edit</a>
+        {% endif %}
+    </div>
+
+<div class="comments">
+    {% for comment in nem.comments %}
+        <hr>
+        <p><strong>{{ comment.author.email }}  le {{ comment.createdAt|date("m/d/Y") }}</strong></p>
+        <p>{{ comment.content }}</p>
+        <hr>
+
+    {% endfor %}
+
+    <hr>
+    <hr>
+    <hr>
+
+{{ form_start(commentForm, {attr: {action:path("app_comment", {id:nem.id})}}) }}
+
+{{ form_widget(commentForm.content, {"attr":{"placeholder":"your comment"}}) }}
+    <button type="submit" class="btn btn-success">Post</button>
+    {{ form_end(commentForm) }}
+
+</div>
+
+
+{% endblock %}
+
+{% block title %}
+{{ nem.name }}
+{% endblock %}
+

@@ -1,0 +1,24 @@
+<nav class="navbar navbar-expand-lg bg-warning">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-link active" aria-current="page" href="{{ path('app_home') }}">Home</a>
+                <a class="nav-link" href="{{ path("app_nems") }}">Les nems</a>
+                <a class="nav-link" href="{{ path('create_nem') }}">Ajouter un nem</a>
+
+                {% if app.user %}
+                <a class="nav-link" href="#">{{ app.user.email }}</a>
+                <a class="nav-link" href="{{ path('app_logout') }}">log out</a>
+                {% else %}
+                <a class="nav-link" href="{{ path('app_register') }}">Register</a>
+                <a class="nav-link" href="{{ path('app_login') }}">log in</a>
+                {% endif %}
+                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+            </div>
+        </div>
+    </div>
+</nav>
