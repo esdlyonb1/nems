@@ -3,16 +3,33 @@
 {% block body %}
 
     <div class="border border-dark">
+        {% for image in nem.image %}
+
+            <img width="200px" src="{{ vich_uploader_asset(image) }}" alt="">
+
+        {% endfor %}
+
         <h3>{{ nem.name }}</h3>
+        <p>Catégorie : {{ nem.category.name }}</p>
+        <a href="{{ path("nem_like", {id:nem.id}) }}" class="btn btn-primary">
+            Like
+            <span class="nbrLikes">({{ nem.likes|length }})</span>
+            {% if app.user %}
+            <i
+            class="bi bi-hand-thumbs-up{% if nem.isLikedBy(app.user) %}-fill{% endif %}"
+            ></i>
+            {% endif %}
+        </a>
+
         <p><strong>Price : {{ nem.price }}€</strong></p>
         <p><strong>Disponible depuis : {{ nem.createdAt|date("m/d/Y") }}</strong></p>
         <p><strong>Inventé par : {{ nem.author.email }}</strong></p>
 
         <a href="{{ path('app_nems') }}" class="btn btn-secondary">Retour</a>
-
         {% if app.user == nem.author %}
         <a href="" class="btn btn-danger">Delete</a>
         <a href="" class="btn btn-warning">Edit</a>
+        <a href="{{ path('nem_add_image', {id:nem.id}) }}" class="btn btn-success">Add image</a>
         {% endif %}
     </div>
 
@@ -21,6 +38,7 @@
         <hr>
         <p><strong>{{ comment.author.email }}  le {{ comment.createdAt|date("m/d/Y") }}</strong></p>
         <p>{{ comment.content }}</p>
+        {% include 'like/button.html.twig' with { routeName:"comment_like", object:comment } %}
         <hr>
 
     {% endfor %}
@@ -37,7 +55,9 @@
 
 </div>
 
-
+    {% if app.user %}
+        <script src="{{ asset('like.js') }}"></script>
+    {% endif %}
 {% endblock %}
 
 {% block title %}

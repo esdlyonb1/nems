@@ -32,9 +32,21 @@ class Nem
     #[ORM\JoinColumn(nullable: false)]
     private ?User $author = null;
 
+    #[ORM\ManyToOne(inversedBy: 'nems')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Category $category = null;
+
+    #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'nem')]
+    private Collection $likes;
+
+    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'nem')]
+    private Collection $image;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->likes = new ArrayCollection();
+        $this->image = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -116,6 +128,91 @@ class Nem
     public function setAuthor(?User $author): static
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): static
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Like>
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(Like $like): static
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes->add($like);
+            $like->setNem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(Like $like): static
+    {
+        if ($this->likes->removeElement($like)) {
+            // set the owning side to null (unless already changed)
+            if ($like->getNem() === $this) {
+                $like->setNem(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isLikedBy(User $user):bool
+    {
+        $isLiked = false;
+        foreach ($this->likes as $like)
+        {
+            if($like->getAuthor() === $user)
+            {
+                $isLiked = true;
+            }
+        }
+        return $isLiked;
+    }
+
+    /**
+     * @return Collection<int, Image>
+     */
+    public function getImage(): Collection
+    {
+        return $this->image;
+    }
+
+    public function addImage(Image $image): static
+    {
+        if (!$this->image->contains($image)) {
+            $this->image->add($image);
+            $image->setNem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Image $image): static
+    {
+        if ($this->image->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getNem() === $this) {
+                $image->setNem(null);
+            }
+        }
 
         return $this;
     }

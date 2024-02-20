@@ -4,11 +4,14 @@
 
 {% block body %}
 
+
     {% for nem in nems %}
     
         <div class="border border-dark">
             <h3>{{ nem.name }}</h3>
-            <p><strong>Price : {{ nem.price }}€</strong></p>
+            <p>Catégorie : {{ nem.category.name }}</p>
+            {% include 'like/button.html.twig' with { routeName:"nem_like", object:nem } %}
+            <p><strong>Price : {{ nem.price }} €</strong></p>
             <p><strong>Disponible depuis : {{ nem.createdAt|date("m/d/Y") }}</strong></p>
             <p><strong>Inventé par : {{ nem.author.email }}</strong></p>
             <a href="{{ path('show_nem', {id:nem.id}) }}" class="btn btn-primary">Voir</a>
@@ -16,4 +19,13 @@
         </div>
     
     {% endfor %}
+
+
+
+    {% if app.user %}
+    <script src="{{ asset('like.js') }}"></script>
+    {% endif %}
 {% endblock %}
+
+
+

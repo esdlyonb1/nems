@@ -9,6 +9,7 @@
                 <a class="nav-link active" aria-current="page" href="{{ path('app_home') }}">Home</a>
                 <a class="nav-link" href="{{ path("app_nems") }}">Les nems</a>
                 <a class="nav-link" href="{{ path('create_nem') }}">Ajouter un nem</a>
+                <a class="nav-link" href="{{ path('app_category') }}">Categories</a>
 
                 {% if app.user %}
                 <a class="nav-link" href="#">{{ app.user.email }}</a>
