@@ -23,6 +23,8 @@ class ImageController extends AbstractController
         //determiner la route utilisée
         $route = $request->attributes->get("_route");
 
+        //en fonction de la route, récuperer la bonne entité
+
         switch ($route){
 
             case 'add_nem_image':
@@ -39,7 +41,6 @@ class ImageController extends AbstractController
         $toBeAddedAnImage = $manager->getRepository($entity)->find($id);
 
 
-        //en fonction de la route, récuperer la bonne entité
 
         $image = new Image();
         $formImage = $this->createForm(ImageType::class, $image);
