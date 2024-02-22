@@ -2,13 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Comment;
 use App\Entity\Image;
 use App\Entity\Nem;
 use App\Form\ImageType;
-use App\Repository\ImageRepository;
-use App\Repository\NemRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +16,7 @@ class ImageController extends AbstractController
     #[Route('/image/add/nem/{id}', name: 'add_nem_image')]
     public function index($id, Request $request, EntityManagerInterface $manager): Response
     {
+
         //determiner la route utilisée
         $route = $request->attributes->get("_route");
 
