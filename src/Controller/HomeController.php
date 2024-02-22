@@ -11,9 +11,8 @@ use Symfony\Component\Routing\Attribute\Route;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(EntityManagerInterface $manager): Response
+    public function index(): Response
     {
-        dd($manager->getRepository(Image::class));
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
         ]);
