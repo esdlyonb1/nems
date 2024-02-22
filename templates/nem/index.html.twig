@@ -9,6 +9,7 @@
     
         <div class="border border-dark">
             <h3>{{ nem.name }}</h3>
+{% include 'image/image_or_not_image.html.twig' with {object:nem} %}
             <p>Catégorie : {{ nem.category.name }}</p>
             {% include 'like/button.html.twig' with { routeName:"nem_like", object:nem } %}
             <p><strong>Price : {{ nem.price }} €</strong></p>

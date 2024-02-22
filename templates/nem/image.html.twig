@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme formImage 'bootstrap_5_layout.html.twig' %}
+{% block body %}
+
+    <h3>page des images du nem {{ nem.name }}</h3>
+{% include 'image/image_or_not_image.html.twig' with {object:nem} %}
+<h3>ajouter une image</h3>
+
+    {{ form_start(formImage, {attr:{action:path('add_nem_image', {id:nem.id})}}) }}
+    {{ form_row(formImage.imageFile) }}
+    <button type="submit" class="btn btn-success">upload</button>
+    {{ form_end(formImage) }}
+
+
+
+
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+

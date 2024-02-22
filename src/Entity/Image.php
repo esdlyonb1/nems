@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
@@ -28,9 +29,13 @@ class Image
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'image')]
+    #[ORM\OneToOne(mappedBy: 'image', cascade: ['persist', 'remove'])]
     private ?Nem $nem = null;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
      * of 'UploadedFile' is injected into this setter to trigger the update. If this
@@ -76,11 +81,6 @@ class Image
         return $this->imageSize;
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function getNem(): ?Nem
     {
         return $this->nem;
@@ -88,10 +88,18 @@ class Image
 
     public function setNem(?Nem $nem): static
     {
+        // unset the owning side of the relation if necessary
+        if ($nem === null && $this->nem !== null) {
+            $this->nem->setImage(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($nem !== null && $nem->getImage() !== $this) {
+            $nem->setImage($this);
+        }
+
         $this->nem = $nem;
 
         return $this;
     }
-
-
 }
