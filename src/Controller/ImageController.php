@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Image;
+use App\Entity\Nem;
 use App\Form\ImageType;
 use App\Repository\ImageRepository;
 use App\Repository\NemRepository;
@@ -16,8 +18,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class ImageController extends AbstractController
 {
     #[Route('/image/add/nem/{id}', name: 'add_nem_image')]
-    #[Route('/image/add/comment/{id}', name: 'add_comment_image')]
-    public function index($id, Request $request, EntityManagerInterface $manager, ImageRepository $imageRepository, NemRepository $nemRepository): Response
+    public function index($id, Request $request, EntityManagerInterface $manager): Response
     {
         //determiner la route utilisée
         $route = $request->attributes->get("_route");
@@ -25,14 +26,17 @@ class ImageController extends AbstractController
         switch ($route){
 
             case 'add_nem_image':
-                $repo = $nemRepository;
+                $entity = Nem::class;
                 $setter = "setNem";
                 $redirectRoute = "nem_image";
                 $routeParam= ["id"=>$id];
+                break;
+
+
         }
 
 
-        $toBeAddedAnImage = $repo->find($id);
+        $toBeAddedAnImage = $manager->getRepository($entity)->find($id);
 
 
         //en fonction de la route, récuperer la bonne entité
@@ -53,4 +57,6 @@ class ImageController extends AbstractController
 
         return $this->redirectToRoute($redirectRoute, $routeParam);
     }
+
+
 }
